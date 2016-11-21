@@ -18,6 +18,8 @@ import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeDriverService;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxBinary;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.interactions.Actions;
@@ -35,8 +37,10 @@ import java.net.URL;
 
 public class LeisureClubTestSuite {
 
-	WebDriver driver;
+	//WebDriver driver;
 	boolean outOfStock = false;
+	private static ChromeDriverService service;
+	private WebDriver driver;
 
 	private void waitUntilSelectOptionsPopulated(final Select select) {
         new FluentWait<WebDriver>(driver)
@@ -59,11 +63,16 @@ public class LeisureClubTestSuite {
 //		caps.setCapability("takeScreenshot", "false");
 //		caps.setCapability( PhantomJSDriverService.PHANTOMJS_CLI_ARGS, cli_args );
 //		caps.setCapability( PhantomJSDriverService.PHANTOMJS_EXECUTABLE_PATH_PROPERTY, "phantomjs");
-//		this.driver =  new PhantomJSDriver( caps );
+//		driver =  new PhantomJSDriver( caps );
 		
 		//chrome remote Driver
 		System.setProperty("webdriver.chrome.driver", "chromedriver");
-		driver=new ChromeDriver();
+		ChromeOptions options = new ChromeOptions();
+		options.setBinary("/usr/bin/google-chrome");
+		DesiredCapabilities capabilities = DesiredCapabilities.chrome();
+		capabilities.setCapability(ChromeOptions.CAPABILITY, options);
+		driver = new ChromeDriver(capabilities);
+		
 		//driver.manage().window().setSize(new Dimension(1920,1080));
 		driver.manage().window().maximize();
 		driver.manage().timeouts().implicitlyWait(30,TimeUnit.SECONDS);
