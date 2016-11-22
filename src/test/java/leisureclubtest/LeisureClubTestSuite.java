@@ -204,9 +204,9 @@ public class LeisureClubTestSuite {
 			WaitStreet2.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='billing:street2']"))).sendKeys("test");
 			System.out.println("Street2 is Enterd");
 			
-//			WebDriverWait WaitPostCode = new WebDriverWait(driver, 100);
-//			WaitPostCode.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='billing:postcode']"))).sendKeys("test");
-//			System.out.println("Billing postcode is Enterd");
+			WebDriverWait WaitPostCode = new WebDriverWait(driver, 100);
+			WaitPostCode.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='billing:postcode']"))).sendKeys("test");
+			System.out.println("Billing postcode is Enterd");
 			
 			//*[@id="billing:country_id"]
 //			Select oSelect2 = new Select(driver.findElement(By.xpath("//*[@id='billing:country_id']")));
@@ -216,28 +216,29 @@ public class LeisureClubTestSuite {
 			//*[@id="billing:city"]
 			//Select oSelect3 = new Select(driver.findElement(By.xpath("html/body/div[1]/div/div[5]/div/div/div[1]/div[5]/form[1]/div/ul/li[1]/fieldset/ul/li[7]/div[1]/div[1]/div/select")));
 			//Select oSelect3 = new Select(driver.findElement(By.name("billing[city]")));
-			Select oSelect3 = new Select(driver.findElement(By.xpath("//*[@id='billing:city']")));
-			waitUntilSelectOptionsPopulated(oSelect3);
-			oSelect3.selectByIndex(3);
+//			Select oSelect3 = new Select(driver.findElement(By.xpath("//*[@id='billing:city']")));
+//			waitUntilSelectOptionsPopulated(oSelect3);
+//			oSelect3.selectByIndex(3);
 
 			//For Server Machine
-//			driver.findElement(By.xpath("//*[@id='billing:city']")).sendKeys("Texas");;
-//			System.out.println("City is Enterd");
+			driver.findElement(By.xpath("//*[@id='billing:city']")).sendKeys("Texas");;
+			System.out.println("City is Enterd");
 
 			//*[@id="billing:region_id"]
-//			Select oSelect3 = new Select(driver.findElement(By.xpath("//*[@id='billing:region_id']")));
-//			oSelect3.selectByIndex(1);
+			Select oSelect3 = new Select(driver.findElement(By.xpath("//*[@id='billing:region_id']")));
+			waitUntilSelectOptionsPopulated(oSelect3);
+			oSelect3.selectByIndex(1);
 			
 			//*[@id="billing:telephone"]
 			driver.findElement(By.xpath("//*[@id='billing:telephone']")).sendKeys("03001234567");
 			System.out.println("Telephone is Enterd");
 			//*[@id="tel2"]
-			driver.findElement(By.xpath("//*[@id='tel2']")).sendKeys("03001234567");
-
-
-
-			//SELECT CASH ON DELEIVERY
-			driver.findElement(By.id("p_method_cashondelivery")).click();
+//			driver.findElement(By.xpath("//*[@id='tel2']")).sendKeys("03001234567");
+//
+//
+//
+//			//SELECT CASH ON DELEIVERY
+//			driver.findElement(By.id("p_method_cashondelivery")).click();
 
 			//PLACE ORDER
 			WebDriverWait wait3 = new WebDriverWait(driver, 200);
