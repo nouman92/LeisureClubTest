@@ -41,7 +41,7 @@ public class LeisureClubTestSuite {
 	boolean outOfStock = false;
 	private static ChromeDriverService service;
 	private WebDriver driver;
-
+	WebElement CheckOut,addCart;
 	private void waitUntilSelectOptionsPopulated(final Select select) {
 		new FluentWait<WebDriver>(driver)
 		.withTimeout(60, TimeUnit.SECONDS)
@@ -81,9 +81,7 @@ public class LeisureClubTestSuite {
 
 	@AfterTest
 	public void afterTest(){
-
 		driver.quit();
-
 	}
 	@Test				
 	public void LeisureClub() {
@@ -100,14 +98,23 @@ public class LeisureClubTestSuite {
 		driver.findElement(By.xpath("html/body/div[1]/div/div[3]/div/div[1]/span")).click();
 		//driver.findElement(By.cssSelector("span.close")).click();
 
-		List<WebElement> allCategories = driver.findElements(By.cssSelector("div.landing-content"));
+		List<WebElement> allCategories = driver.findElements(By.cssSelector("div.homecategory-landing"));
+		System.out.println("print all categories "+allCategories.size());
 		Random random1 = new Random();
 		WebElement randomCategory = allCategories.get(random1.nextInt(allCategories.size()));
 
-		String temp = randomCategory.getText(); 
+		String temp= randomCategory.getAttribute("class");
 		System.out.println("print the selected Category "+temp);
+		//System.out.println("print the selected Category "+randomCategory.getCssValue("src"));
+		//System.out.println("print the selected Category "+randomCategory.getTagName());
+		
+		if(temp.equals("homecategory-landing madeofpakistan"))
+		{
+			randomCategory=allCategories.get(1);
+			temp=randomCategory.getAttribute("class");
+			System.out.println("Inside if Category is changed to "+temp);
+		}
 		randomCategory.click();
-
 		//SELECT A RANDOM PRODUCT
 		List<WebElement> allProducts = driver.findElements(By.cssSelector("a.product-image"));
 		System.out.println("Print the allProducts "+allProducts);
@@ -115,8 +122,6 @@ public class LeisureClubTestSuite {
 		Random random2 = new Random();
 		WebElement randomProduct = allProducts.get(random2.nextInt(allProducts.size()));
 		System.out.println("Random product is "+randomProduct);
-
-		// WebElement element = driver.findElement(By("element_path"));
 
 		Actions actions = new Actions(driver);
 
@@ -130,47 +135,82 @@ public class LeisureClubTestSuite {
 		//WebDriverWait waitSwatch = new WebDriverWait(driver, 50);
 		//waitSwatch.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='showChart']/span")));
 		//*[@id="product-options-wrapper"]/dl[1]/dt/label/text()
+		//System.out.println("befor compareing" +temp);
 
-		List<WebElement> allsizes = driver.findElements(By.cssSelector("span[class='swatch']"));
-		System.out.println("allsizes is "+allsizes);
-		Random random3 = new Random();
-		WebElement randomSize = allsizes.get(random3.nextInt(allsizes.size()));
-		if(!allsizes.isEmpty())//if the size is availabe,click/select it
+		if(!(temp.equals("homecategory-landing print-landing")))
 		{
-			randomSize.click();
-			System.out.println("Random size is clicked");
-		}
-		else//if the sizes are not available, print on console that the product is out of stock
-		{
-			System.out.println("the item selected is out of stock");
-			outOfStock = true;
-		}
-		//SELECT QUANTITY = 1
-		//Select oSelect = new Select(driver.findElement(By.xpath("//*[@id='qty']")));
-		//oSelect.selectByVisibleText("1");
-
-		//ADD TO CART
-		//*[@id="product_addtocart_form"]/div[4]/div[5]/div[3]/button/span/span
-		WebElement addCart=driver.findElement(By.xpath("//*[@id='product_addtocart_form']/div[4]/div[5]/div[3]/button/span/span"));
-		addCart.click();
-		System.out.println("add to Cart button is clicked");
-
-		//CHECKOUT
-		WebDriverWait wait = new WebDriverWait(driver, 100);
-		wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='header-cart']/div[3]/div[3]/div/a")));
-		WebElement CheckOut = driver.findElement(By.xpath("//*[@id='header-cart']/div[3]/div[3]/div/a"));
-		if(!(CheckOut.isDisplayed()&& CheckOut.isEnabled()))
-		{
-			if(!CheckOut.isDisplayed())
+			System.out.println("inside if befor random product size");
+			List<WebElement> allsizes = driver.findElements(By.cssSelector("span[class='swatch']"));
+			System.out.println("allsizes is "+allsizes);
+			Random random3 = new Random();
+			WebElement randomSize = allsizes.get(random3.nextInt(allsizes.size()));
+			if(!allsizes.isEmpty())//if the size is availabe,click/select it
 			{
-				System.out.println("CHECKOUT button is not displayed on the webpage");
+				randomSize.click();
+				System.out.println("Random size is clicked");
 			}
-			if(!CheckOut.isEnabled())
+			else//if the sizes are not available, print on console that the product is out of stock
 			{
-				System.out.println("CHECKOUT button is disabled on webpage");
+				System.out.println("the item selected is out of stock");
+				outOfStock = true;
+			}
+
+			//SELECT QUANTITY = 1
+			//Select oSelect = new Select(driver.findElement(By.xpath("//*[@id='qty']")));
+			//oSelect.selectByVisibleText("1");
+
+			//ADD TO CART
+			//*[@id="product_addtocart_form"]/div[4]/div[5]/div[3]/button/span/span
+			addCart=driver.findElement(By.xpath("//*[@id='product_addtocart_form']/div[4]/div[5]/div[3]/button/span/span"));
+			addCart.click();
+			System.out.println("add to Cart button is clicked");
+
+			//CHECKOUT
+			WebDriverWait wait = new WebDriverWait(driver, 100);
+			wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='header-cart']/div[3]/div[3]/div/a")));
+			CheckOut = driver.findElement(By.xpath("//*[@id='header-cart']/div[3]/div[3]/div/a"));
+			if(!(CheckOut.isDisplayed()&& CheckOut.isEnabled()))
+			{
+				if(!CheckOut.isDisplayed())
+				{
+					System.out.println("CHECKOUT button is not displayed on the webpage");
+				}
+				if(!CheckOut.isEnabled())
+				{
+					System.out.println("CHECKOUT button is disabled on webpage");
+				}
 			}
 		}
-		else
+		if(temp.equals("homecategory-landing print-landing"))
+		{
+			//SELECT QUANTITY = 1
+			//Select oSelect = new Select(driver.findElement(By.xpath("//*[@id='qty']")));
+			//oSelect.selectByVisibleText("1");
+
+			//ADD TO CART
+			//*[@id="product_addtocart_form"]/div[4]/div[5]/div[3]/button/span/span
+			addCart=driver.findElement(By.xpath("//*[@id='product_addtocart_form']/div[5]/div/div[2]/button/span/span"));
+			addCart.click();
+			System.out.println("add to Cart button is clicked");
+
+			//CHECKOUT
+			WebDriverWait wait = new WebDriverWait(driver, 100);
+			wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='header-cart']/div[3]/div[3]/div/a/span")));
+			CheckOut = driver.findElement(By.xpath("//*[@id='header-cart']/div[3]/div[3]/div/a/span"));
+			if(!(CheckOut.isDisplayed()&& CheckOut.isEnabled()))
+			{
+				if(!CheckOut.isDisplayed())
+				{
+					System.out.println("CHECKOUT button is not displayed on the webpage");
+				}
+				if(!CheckOut.isEnabled())
+				{
+					System.out.println("CHECKOUT button is disabled on webpage");
+				}
+			}
+		}
+
+		if(outOfStock==false)
 		{
 			CheckOut.click();
 			System.out.println("Checkout Button is clicked");
@@ -209,7 +249,7 @@ public class LeisureClubTestSuite {
 			//waitUntilSelectOptionsPopulated(oSelect2);
 			oSelect2.selectByVisibleText("United States");
 			System.out.println("Country United States is Enterd");
-			
+
 			WebDriverWait WaitPostCode = new WebDriverWait(driver, 100);
 			WaitPostCode.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='billing:postcode']"))).sendKeys("test");
 			System.out.println("Billing postcode is Enterd");
@@ -234,7 +274,7 @@ public class LeisureClubTestSuite {
 			//*[@id="billing:telephone"]
 			driver.findElement(By.xpath("//*[@id='billing:telephone']")).sendKeys("03001234567");
 			System.out.println("Telephone is Enterd");
-			
+
 			//*[@id="tel2"]
 			//driver.findElement(By.xpath("//*[@id='tel2']")).sendKeys("03001234567");
 			////SELECT CASH ON DELEIVERY
